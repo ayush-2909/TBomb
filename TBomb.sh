@@ -45,7 +45,13 @@ banner() {
     echo " "
 }
 
-init_environ(){
+#!/bin/bash
+
+# Define the 'distro' variable here based on your system's Linux distribution.
+distro="debian"  # Change this to your specific distribution
+
+# Function to initialize the environment
+init_environ() {
     declare -A backends
     backends=(
         ["arch"]="pacman -S --noconfirm"
@@ -71,21 +77,28 @@ init_environ(){
     fi
     PIP="$PYTHON -m pip"
 }
-install_deps(){
-    
-    packages=(openssl git $PYTHON $PYTHON-pip figlet toilet)
-    if [ -n "$INSTALL" ];then
-        for package in ${packages[@]}; do
-            $SUDO $INSTALL $package
+
+# Function to install dependencies
+install_deps() {
+    packages=(openssl git $PYTHON ${PYTHON}-pip figlet toilet)
+    if [ -n "$INSTALL" ]; then
+        for package in "${packages[@]}"; do
+            $SUDO $INSTALL "$package"
         done
         $PIP install -r requirements.txt
     else
         echo "We could not install dependencies."
-        echo "Please make sure you have git, python3, pip3 and requirements installed."
-        echo "Then you can execute bomber.py ."
-        exit
+        echo "Please make sure you have git, $PYTHON, $PYTHON-pip, and requirements installed."
+        echo "Then you can execute bomber.py."
+        exit 1
     fi
 }
+
+# Call the initialization function
+init_environ
+
+# Call the function to install dependencies
+install_deps
 
 banner
 pause
