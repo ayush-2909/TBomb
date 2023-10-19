@@ -46,7 +46,8 @@ banner() {
 }
 
 init_environ(){
-    declare -A backends; backends=(
+    declare -A backends
+    backends=(
         ["arch"]="pacman -S --noconfirm"
         ["debian"]="apt-get -y install"
         ["ubuntu"]="apt -y install"
@@ -70,7 +71,6 @@ init_environ(){
     fi
     PIP="$PYTHON -m pip"
 }
-
 install_deps(){
     
     packages=(openssl git $PYTHON $PYTHON-pip figlet toilet)
